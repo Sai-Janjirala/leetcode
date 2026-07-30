@@ -2,40 +2,30 @@ class Solution {
 public:
     int compress(vector<char>& chars) {
 
-        int idx = 0;               // Position to insert compressed chars
-        int n = chars.size();
-
-        for(int i = 0; i < n; i++) {
-
-            char ch = chars[i];    // Current character
+        int index = 0;
+        int i = 0;
+        while(i < chars.size())
+        {
+            char current = chars[i];
             int count = 0;
-
-            // Count same consecutive characters
-            while(i < n && chars[i] == ch) {
-
+            while(i < chars.size() && chars[i] == current)
+            {
                 count++;
                 i++;
             }
+            chars[index++] = current;
 
-            // Store character
-            chars[idx] = ch;
-            idx++;
+            if(count > 1)
+            {
+                string cnt = to_string(count);
 
-            // Store count only if > 1
-            if(count > 1) {
-
-                string str = to_string(count);
-
-                for(char digit : str) {
-
-                    chars[idx] = digit;
-                    idx++;
+                for(char c : cnt)
+                {
+                    chars[index++] = c;
                 }
             }
-
-            i--; // Because for-loop will also increase i
         }
 
-        return idx;
+        return index;
     }
 };
