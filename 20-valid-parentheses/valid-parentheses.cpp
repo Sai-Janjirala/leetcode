@@ -1,41 +1,31 @@
 class Solution {
 public:
-    bool isValid(string s) {
+    bool isValid(string str) {
+        stack<char> s;
 
-        stack<char> st;
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str[i];
+            if (str[i] == '(' || str[i] == '{' || str[i] == '[') {
+                s.push(ch);
 
-        for(int i = 0; i < s.length(); i++) {
+            } else if (!s.empty()) {
+                if ((str[i] == ')' && s.top() == '(') ||
+                    (str[i] == '}' && s.top() == '{') ||
+                    (str[i] == ']' && s.top() == '[')) {
+                s.pop();
+                }
+                else{
+                    return false;
+                }
 
-            char ch = s[i];
-
-            // Opening brackets
-            if(ch == '(' || ch == '{' || ch == '[') {
-
-                st.push(ch);
             }
-
-            // Closing brackets
-            else {
-
-                // Stack empty means no matching opening bracket
-                if(st.empty()) {
-                    return false;
-                }
-
-                // Check matching brackets
-                if((ch == ')' && st.top() == '(') ||
-                   (ch == '}' && st.top() == '{') ||
-                   (ch == ']' && st.top() == '[')) {
-
-                    st.pop();
-                }
-                else {
-                    return false;
-                }
+          else   if(s.empty() && ( ch==']' || ch=='}' || ch==')')){
+                return false;
             }
         }
-
-        // Valid only if stack becomes empty
-        return st.empty();
+        if (s.empty()) {
+            return true;
+        }
+        return false;
     }
 };
