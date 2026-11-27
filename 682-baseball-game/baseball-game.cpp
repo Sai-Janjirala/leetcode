@@ -1,41 +1,33 @@
 class Solution {
 public:
     int calPoints(vector<string>& operations) {
+        stack<int> st;
 
-        vector<int> record;
-
-        for(int i = 0; i < operations.size(); i++) {
-
-            if(operations[i] == "C") {
-
-                record.pop_back();
-            }
-
-            else if(operations[i] == "D") {
-
-                record.push_back(2 * record.back());
-            }
-
-            else if(operations[i] == "+") {
-
-                int n = record.size();
-
-                record.push_back(record[n - 1] + record[n - 2]);
-            }
-
+        for (int i = 0; i < operations.size(); i++) {
+            if (operations[i] == "C") {
+                st.pop();
+            } 
+            else if (operations[i] == "D") {
+                st.push(2 * st.top());
+            } 
+            else if (operations[i] == "+") {
+                int top1 = st.top();
+                st.pop();
+                int top2 = st.top();
+                st.push(top1);
+                st.push(top1 + top2);
+            } 
             else {
-
-                record.push_back(stoi(operations[i]));
+                st.push(stoi(operations[i]));
             }
         }
 
-        int sum = 0;
-
-        for(int i = 0; i < record.size(); i++) {
-
-            sum += record[i];
+        int total = 0;
+        while (!st.empty()) {
+            total += st.top();
+            st.pop();
         }
 
-        return sum;
+        return total;
     }
 };
